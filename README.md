@@ -1,75 +1,98 @@
 <h1 align="center">CodeAlpha AI Internship</h1>
+
 <p align="center">
-Four AI projects built during my Artificial Intelligence internship at CodeAlpha:<br>
-computer vision, NLP, and sequence modelling.
+  Four AI projects built during my Artificial Intelligence internship at CodeAlpha:<br>
+  computer vision, NLP, and sequence modelling.
 </p>
+
 <p align="center">
-<img src="https://img.shields.io/github/last-commit/heena-jindal/codealpha-internship?style=flat-square" alt="last commit" />
-<img src="https://img.shields.io/github/languages/top/heena-jindal/codealpha-internship?style=flat-square" alt="top language" />
-<img src="https://img.shields.io/github/license/heena-jindal/codealpha-internship?style=flat-square" alt="license" />
-<img src="https://img.shields.io/github/repo-size/heena-jindal/codealpha-internship?style=flat-square" alt="repo size" />
+  <img src="https://img.shields.io/github/last-commit/heena-jindal/codealpha-internship?style=flat-square" alt="last commit" />
+  <img src="https://img.shields.io/github/languages/top/heena-jindal/codealpha-internship?style=flat-square" alt="top language" />
+  <img src="https://img.shields.io/github/license/heena-jindal/codealpha-internship?style=flat-square" alt="license" />
+  <img src="https://img.shields.io/github/repo-size/heena-jindal/codealpha-internship?style=flat-square" alt="repo size" />
 </p>
-Projects
+
+## Projects
+
 <!-- TASKS:START -->
-Task
-What it does
-Stack
-Result
-Object Detection & Tracking
-Real-time detection (YOLOv4-tiny, 80 COCO classes) with SORT multi-object tracking and persistent IDs
-Python, OpenCV (DNN), NumPy, SciPy
-Runs on CPU from a webcam or video file and shows live FPS
-Language Translator
-Browser translator for 24 languages with swap, copy-to-clipboard and text-to-speech
-HTML, CSS, JavaScript, MyMemory API
-No install and no API key needed
-FAQ Chatbot
-Client-side chatbot that matches questions to FAQs using TF-IDF and cosine similarity
-JavaScript, HTML, CSS
-20 sample FAQs; replies "not sure" below a 0.15 similarity score
-Music Generation
-Stacked LSTM trained on Bach chorale MIDI files that generates new melodies
-Python, TensorFlow/Keras, music21
-End-to-end pipeline from MIDI data to a generated .mid file
+| Task | What it does | Stack | Result |
+|---|---|---|---|
+| [Object Detection & Tracking](object-detection/) | Real-time detection (YOLOv4-tiny, 80 COCO classes) with SORT multi-object tracking and persistent IDs | Python, OpenCV (DNN), NumPy, SciPy | Runs on CPU from a webcam or video file and shows live FPS |
+| [Language Translator](translator/) | Browser translator for 24 languages with swap, copy-to-clipboard and text-to-speech | HTML, CSS, JavaScript, MyMemory API | No install and no API key needed |
+| [FAQ Chatbot](faq-chatbot/) | Client-side chatbot that matches questions to FAQs using TF-IDF and cosine similarity | JavaScript, HTML, CSS | 20 sample FAQs; replies "not sure" below a 0.15 similarity score |
+| [Music Generation](music-generation/) | Stacked LSTM trained on Bach chorale MIDI files that generates new melodies | Python, TensorFlow/Keras, music21 | End-to-end pipeline from MIDI data to a generated .mid file |
 <!-- TASKS:END -->
-How the projects fit together
-> Loading Mermaid code…
-​
-Area
-Project
-Core technique
-Computer vision
-Object Detection & Tracking
-Pre-trained YOLOv4-tiny + Kalman-filter SORT tracker
-NLP
-FAQ Chatbot
-TF-IDF vectors + cosine similarity
-NLP / web APIs
-Translator
-REST API integration, Web Speech API
-Deep learning
-Music Generation
-2-layer LSTM predicting the next note
-Repository layout
-> Loading Plain Text code…
-​
+
+## How the projects fit together
+
+```mermaid
+flowchart LR
+    V["Computer vision"] --> OD["Object Detection & Tracking"]
+    L["Language"] --> TR["Translator"]
+    L --> FAQ["FAQ Chatbot"]
+    S["Sequence modelling"] --> MU["Music Generation"]
+```
+
+| Area | Project | Core technique |
+|---|---|---|
+| Computer vision | Object Detection & Tracking | Pre-trained YOLOv4-tiny + Kalman-filter SORT tracker |
+| NLP | FAQ Chatbot | TF-IDF vectors + cosine similarity |
+| NLP / web APIs | Translator | REST API integration, Web Speech API |
+| Deep learning | Music Generation | 2-layer LSTM predicting the next note |
+
+## Repository layout
+
+```
+codealpha-internship/
+├── object-detection/     Python · OpenCV · YOLOv4-tiny · SORT
+├── translator/           HTML · CSS · JavaScript
+├── faq-chatbot/          HTML · CSS · JavaScript
+├── music-generation/     Python · TensorFlow · music21
+├── tasks.json            Data for the project table above
+├── scripts/              Rebuilds the table from tasks.json
+└── .github/workflows/    Runs that script on push
+```
+
 Each folder has its own README with setup steps and a short explanation of how it works.
+
 <details>
 <summary><b>Run each project (quick commands)</b></summary>
-Object Detection & Tracking
-> Loading Bash code…
-​
-Translator (static site, no install)
-> Loading Bash code…
-​
-FAQ Chatbot (static site, must be served over HTTP)
-> Loading Bash code…
-​
-Music Generation
-> Loading Bash code…
-​
+
+**Object Detection & Tracking**
+```bash
+cd object-detection
+pip install -r requirements.txt
+bash download_model.sh
+python main.py --source 0
+```
+
+**Translator** (static site, no install)
+```bash
+cd translator
+python3 -m http.server 8000     # open http://localhost:8000
+```
+
+**FAQ Chatbot** (static site, must be served over HTTP)
+```bash
+cd faq-chatbot
+python3 -m http.server 8000     # open http://localhost:8000
+```
+
+**Music Generation**
+```bash
+cd music-generation
+pip install -r requirements.txt
+python collect_data.py --n 40
+python preprocess.py --seq_len 50
+python train_model.py --epochs 100
+python generate_music.py --n_notes 200
+```
 </details>
-Skills demonstrated
+
+## Skills demonstrated
+
 Python · OpenCV · object tracking (Kalman filter, Hungarian algorithm) · TF-IDF and cosine similarity · TensorFlow/Keras LSTMs · MIDI processing with music21 · REST API integration · vanilla JavaScript front ends
-License
-MIT. See LICENSE.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
