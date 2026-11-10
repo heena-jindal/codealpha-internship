@@ -1,0 +1,30 @@
+[
+  {
+    "folder": "object-detection",
+    "title": "Object Detection & Tracking",
+    "summary": "Real-time detection (YOLOv4-tiny, 80 COCO classes) with SORT multi-object tracking and persistent IDs",
+    "stack": "Python, OpenCV (DNN), NumPy, SciPy",
+    "result": "Runs on CPU from a webcam or video file and shows live FPS"
+  },
+  {
+    "folder": "translator",
+    "title": "Language Translator",
+    "summary": "Browser translator for 24 languages with swap, copy-to-clipboard and text-to-speech",
+    "stack": "HTML, CSS, JavaScript, MyMemory API",
+    "result": "No install and no API key needed"
+  },
+  {
+    "folder": "faq-chatbot",
+    "title": "FAQ Chatbot",
+    "summary": "Client-side chatbot that matches questions to FAQs using TF-IDF and cosine similarity",
+    "stack": "JavaScript, HTML, CSS",
+    "result": "20 sample FAQs; replies \"not sure\" below a 0.15 similarity score"
+  },
+  {
+    "folder": "music-generation",
+    "title": "Music Generation",
+    "summary": "Stacked LSTM trained on Bach chorale MIDI files that generates new melodies",
+    "stack": "Python, TensorFlow/Keras, music21",
+    "result": "End-to-end pipeline from MIDI data to a generated .mid file"
+  }
+]
