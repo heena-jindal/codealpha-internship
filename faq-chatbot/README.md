@@ -1,46 +1,55 @@
-# 🤖 FAQ Chatbot (NLP + Cosine Similarity)
+# 🤖 FAQ Chatbot (TF-IDF + Cosine Similarity)
 
-A simple client-side chatbot that answers questions about a product/topic by
-matching the user's message against a bank of FAQs using classic NLP
-techniques — no server, no external API, no ML library required.
+A chatbot that answers questions about a product by matching the user's message against a bank of FAQs. It runs entirely in the browser, with no server, no external API and no ML library.
+
+<!-- Add a screenshot of the chat window here, e.g.:  ![demo](demo.png) -->
 
 ## How it works
-1. **FAQ collection** — questions & answers live in [`faqs.json`](./faqs.json),
-   pre-loaded with 20 sample FAQs for a fictional "TechGadget" store
-   (shipping, returns, payments, warranty, account, etc.). Edit this file to
-   use your own topic/product.
-2. **Preprocessing** (`script.js`) — every question (and the user's message)
-   is: lowercased, stripped of punctuation, tokenized, cleared of stopwords,
-   and lightly stemmed. This mirrors what you'd do with NLTK/spaCy in Python
-   (`word_tokenize`, stopword removal, `PorterStemmer`) — implemented here in
-   plain JavaScript so the whole project runs in the browser with zero
-   dependencies.
-3. **Matching** — each FAQ question is turned into a **TF-IDF vector**; the
-   user's message is vectorized the same way, and **cosine similarity** is
-   computed against every FAQ. The highest-scoring match above a confidence
-   threshold (0.15) is returned as the answer; below that, the bot admits it
-   doesn't know.
-4. **Chat UI** (`index.html` + `style.css`) — a simple message-bubble chat
-   window with quick-suggestion chips and a text input.
 
-## How to run
-Because the page loads `faqs.json` via `fetch()`, it needs to be served over
-HTTP (opening `index.html` directly as a `file://` URL will block the fetch
-in most browsers). Serve it locally:
-
-```bash
-cd task2-faq-chatbot
-python3 -m http.server 8000
-# then visit http://localhost:8000
+```mermaid
+flowchart LR
+    A["User message"] --> B["Preprocess<br/>lowercase, tokenize,<br/>remove stopwords, stem"]
+    B --> C["TF-IDF vector"]
+    C --> D["Cosine similarity<br/>against every FAQ"]
+    D --> E{"Best score<br/>≥ 0.15?"}
+    E -->|yes| F["Return that FAQ's answer"]
+    E -->|no| G["Say it isn't sure"]
 ```
 
-Or use any static server (VS Code "Live Server" extension, `npx serve`, etc.),
-or deploy the folder to **GitHub Pages**.
+1. **Knowledge base.** Questions and answers live in [`faqs.json`](./faqs.json), pre-loaded with 20 sample FAQs for a fictional "TechGadget" store (shipping, returns, payments, warranty, accounts). Edit this file to use your own topic.
+2. **Preprocessing.** Each question and each user message is lowercased, stripped of punctuation, tokenized, cleared of stopwords and lightly stemmed with a simple suffix-stripping stemmer. This mirrors what NLTK or spaCy do in Python, written in plain JavaScript.
+3. **Matching.** Each FAQ question becomes a TF-IDF vector, and the user's message is vectorized the same way. Cosine similarity picks the closest FAQ. If the best score is below the **0.15** threshold, the bot says it is not sure instead of guessing.
+4. **Chat UI.** `index.html` and `style.css` provide message bubbles, quick-suggestion chips and a text input.
 
-## Using a Python NLP stack instead
-This implementation is JavaScript so it runs entirely client-side with no
-backend. If you'd rather use **NLTK** or **spaCy** as the task suggests, the
-equivalent Python pipeline would be:
+## Run it
+
+`faqs.json` is loaded with `fetch()`, so the page must be served over HTTP. Opening `index.html` directly as a `file://` URL will be blocked in most browsers.
+
+```bash
+cd faq-chatbot
+python3 -m http.server 8000
+# then open http://localhost:8000
+```
+
+Any static server works (VS Code Live Server, `npx serve`), and the folder can be deployed to GitHub Pages.
+
+## Use your own FAQs
+
+Edit `faqs.json`, keeping the same shape:
+
+```json
+[
+  { "q": "What are your shipping options?", "a": "We offer Standard, Express and Same-Day delivery." }
+]
+```
+
+## Limitations
+
+- Matching is based on shared words, so it does not understand meaning. Rewording a question with different vocabulary can miss.
+- It only answers from the FAQ list. Anything outside it gets the "not sure" reply.
+- The threshold (`THRESHOLD` in `script.js`) is a single fixed value. Raise it for fewer wrong answers, or lower it for fewer "not sure" replies.
+
+## Python version of the same pipeline
 
 ```python
 import nltk
@@ -67,19 +76,14 @@ def get_answer(user_input, threshold=0.15):
     best = scores.argmax()
     return faqs[best]["a"] if scores[best] >= threshold else "I'm not sure, could you rephrase?"
 ```
-You could wrap this in a small Flask/FastAPI backend and have `script.js`
-call it via `fetch('/api/ask', ...)` instead of computing TF-IDF in the
-browser, if you need a Python-based pipeline for grading/demo purposes.
 
-## File structure
+## Project structure
+
 ```
-task2-faq-chatbot/
-├── index.html   # Chat UI markup
-├── style.css    # Styling
-├── script.js    # Preprocessing, TF-IDF, cosine similarity, chat logic
-├── faqs.json    # Editable FAQ knowledge base
+faq-chatbot/
+├── index.html   # chat UI markup
+├── style.css    # styling
+├── script.js    # preprocessing, TF-IDF, cosine similarity, chat logic
+├── faqs.json    # editable FAQ knowledge base
 └── README.md
 ```
-
-## License
-MIT — free to use and modify.
